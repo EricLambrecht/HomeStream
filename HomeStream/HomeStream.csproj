@@ -41,6 +41,9 @@
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="Tortilla">
+      <HintPath>..\..\Tortilla\Tortilla\bin\Debug\Tortilla.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -57,6 +60,8 @@
     <Compile Include="Receiver.cs" />
     <Compile Include="ConnectionEventArgs.cs" />
     <Compile Include="ImageUtilities.cs" />
+    <Compile Include="SettingsWindow.cs" />
+    <Compile Include="gtk-gui\HomeStream.SettingsWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

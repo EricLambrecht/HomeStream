@@ -1,10 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HomeStream\ImageUtilities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HomeStream\HomeStreamApp.cs">
     <Files>
       <File FileName="HomeStream\Receiver.cs" Line="1" Column="1" />
       <File FileName="HomeStream\MainWindow.cs" Line="1" Column="1" />
-      <File FileName="HomeStream\ImageUtilities.cs" Line="21" Column="39" />
+      <File FileName="HomeStream\ImageUtilities.cs" Line="1" Column="1" />
+      <File FileName="HomeStream\HomeStreamApp.cs" Line="143" Column="56" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

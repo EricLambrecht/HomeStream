@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using Gtk;
+using Makhani.Tortilla;
 
 namespace HomeStream
 {
@@ -130,8 +131,14 @@ namespace HomeStream
 
 		public virtual void ConnectToIp (string ip) { // use IPAddress or something
 			Win.InvokeLogLine ("Connecting to " + ip);
-			byte[] image = ImageUtilities.GetScreenshot (50);
-			Win.InvokeLogLine ("took screenshot^^");
+			Tortilla tortilla = new Tortilla ();
+			foreach (string audioDevice in tortilla.AudioDevices) { 
+				Win.InvokeLogLine (audioDevice);
+			}
+			foreach (string line in tortilla.Output) { 
+				Win.InvokeLogLine (line);
+			}
+			//tortilla.KillProcess (tortilla.FFmpegProcess);
 		}
 
 		protected void OnReceiverAdded (object sender, ConnectionEventArgs e) {
