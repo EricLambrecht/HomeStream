@@ -13,6 +13,7 @@ public partial class MainWindow: Gtk.Window
 	public event EventHandler<ConnectionEventArgs> ConnectAttempt;
 	private readonly object SyncRoot = new object();
 	public NodeStore Devices  { get; set; }
+	protected Window childWindow;
 	const int statusBarID = 1;
 
 	public MainWindow () : base (Gtk.WindowType.Toplevel)
@@ -160,6 +161,10 @@ public partial class MainWindow: Gtk.Window
 		a.RetVal = true;
 	}
 		
+	protected void OnOpenSettings (object sender, EventArgs e)
+	{
+		childWindow = new SettingsWindow ();
+	}
 
 }
 

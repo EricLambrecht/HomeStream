@@ -8,6 +8,12 @@ namespace HomeStream
 			base (Gtk.WindowType.Toplevel)
 		{
 			this.Build ();
+			Initialize ();
+		}
+
+		protected void Initialize() 
+		{
+			//audioDevicesComboBox.
 		}
 	}
 }
