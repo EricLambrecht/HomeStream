@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "HomeStream", "HomeStream\HomeStream.csproj", "{0D398AEE-72A7-4A9B-A7D5-2BC9ED1BDDD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeStream", "HomeStream\HomeStream.csproj", "{B8B548B8-2577-438B-A01E-9EF020A34EAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tortilla", "..\Tortilla\Tortilla\Tortilla.csproj", "{012D5570-61D3-4E5B-BFA9-40C719C432DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,6 +11,10 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{012D5570-61D3-4E5B-BFA9-40C719C432DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{012D5570-61D3-4E5B-BFA9-40C719C432DC}.Debug|x86.Build.0 = Debug|Any CPU
+		{012D5570-61D3-4E5B-BFA9-40C719C432DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{012D5570-61D3-4E5B-BFA9-40C719C432DC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = HomeStream\HomeStream.csproj
