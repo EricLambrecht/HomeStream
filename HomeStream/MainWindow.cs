@@ -8,9 +8,9 @@ public partial class MainWindow: Gtk.Window
 	public NodeView DeviceView;
 	public DeviceTreeNode SelectedDeviceTreeNode;
 	public event EventHandler RefreshRequest;
-	public event EventHandler BroadcastAttempt;
+	public event EventHandler StreamingAttempt;
 	public event EventHandler<ConnectionEventArgs> ReceiverAdded;
-	public event EventHandler<ConnectionEventArgs> ConnectAttempt;
+	public event EventHandler<ConnectionEventArgs> ConnectionAttempt;
 	private readonly object SyncRoot = new object();
 	public NodeStore Devices  { get; set; }
 	protected Window childWindow;
@@ -128,17 +128,17 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnClickConnect (object sender, EventArgs e)
 	{
-		EventHandler<ConnectionEventArgs> handler = ConnectAttempt;
+		EventHandler<ConnectionEventArgs> handler = ConnectionAttempt;
 		if (handler != null) {
 			handler (this, new ConnectionEventArgs(SelectedDeviceTreeNode.IP, SelectedDeviceTreeNode.Name)); // raise ConnectAttempt
 		}
 	}
 
-	protected void OnClickBroadcast (object sender, EventArgs e)
+	protected void OnClickStream (object sender, EventArgs e)
 	{
-		EventHandler handler = BroadcastAttempt;
+		EventHandler handler = StreamingAttempt;
 		if (handler != null) {
-			handler (this, e); // raise RefreshRequest
+			handler (this, e); 
 		}
 	}
 
@@ -165,6 +165,6 @@ public partial class MainWindow: Gtk.Window
 	{
 		childWindow = new SettingsWindow ();
 	}
-
+		
 }
 

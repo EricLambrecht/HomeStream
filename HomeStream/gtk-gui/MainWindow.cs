@@ -196,5 +196,6 @@ public partial class MainWindow
 		this.EinstellungenAction.Activated += new global::System.EventHandler (this.OnOpenSettings);
 		this.buttonRefreshNetwork.Clicked += new global::System.EventHandler (this.OnClickRefresh);
 		this.buttonConnect.Clicked += new global::System.EventHandler (this.OnClickConnect);
+		this.buttonBroadcast.Clicked += new global::System.EventHandler (this.OnClickStream);
 	}
 }

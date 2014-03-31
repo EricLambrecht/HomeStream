@@ -16,6 +16,7 @@ namespace HomeStream
 	class HomeStreamApp
 	{
 		MainWindow Win;
+		Tortilla tortilla;
 		public List<Receiver> Receivers;
 		bool DebugMode = false;
 		const int statusBarID = 2;
@@ -27,8 +28,9 @@ namespace HomeStream
 
 		public HomeStreamApp() {
 			Application.Init ();
+			tortilla = new Tortilla ();
 			Win = new MainWindow ();
-			Win.ConnectAttempt += OnConnectAttempt;
+			Win.ConnectionAttempt += OnConnectionAttempt;
 			Win.RefreshRequest += OnRefreshRequest;
 			Win.ReceiverAdded += OnReceiverAdded;
 			Win.Show ();
@@ -125,20 +127,34 @@ namespace HomeStream
 			return true;
 		}
 
-		protected void OnConnectAttempt (object sender, ConnectionEventArgs e) {
+		protected void OnConnectionAttempt (object sender, ConnectionEventArgs e) {
 			ConnectToIp ("Trying to connect with: " + e.IP);
 		}
 
 		public virtual void ConnectToIp (string ip) { // use IPAddress or something
 			Win.InvokeLogLine ("Connecting to " + ip);
-			Tortilla tortilla = new Tortilla ();
+			tortilla.OutputReceived += OnOutputReceived;
+			foreach (string videoDevice in tortilla.VideoDevices) { 
+				Win.InvokeLogLine (videoDevice);
+			}
 			foreach (string audioDevice in tortilla.AudioDevices) { 
 				Win.InvokeLogLine (audioDevice);
 			}
 			foreach (string line in tortilla.Output) { 
 				Win.InvokeLogLine (line);
 			}
+
 			//tortilla.KillProcess (tortilla.FFmpegProcess);
+		}
+
+		protected async void OnStreamingAttempt (object sender, ConnectionEventArgs e) {
+			Task<bool> task = tortilla.StreamWindowsScreenToIp ("UScreenCapture", "Stereo Mix (ASUS Xonar D1 Audio Device)", "127.0.0.1:8080", StreamingMode.UDP);
+			await task;
+		}
+
+		void OnOutputReceived (object sender, DataReceivedEventArgs e)
+		{
+			Win.InvokeLogLine (tortilla.Output.Last ());
 		}
 
 		protected void OnReceiverAdded (object sender, ConnectionEventArgs e) {
