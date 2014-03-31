@@ -9,6 +9,7 @@ public partial class MainWindow: Gtk.Window
 	public DeviceTreeNode SelectedDeviceTreeNode;
 	public event EventHandler RefreshRequest;
 	public event EventHandler StreamingAttempt;
+	public event EventHandler DetailsToggled;
 	public event EventHandler<ConnectionEventArgs> ReceiverAdded;
 	public event EventHandler<ConnectionEventArgs> ConnectionAttempt;
 	private readonly object SyncRoot = new object();
@@ -166,5 +167,12 @@ public partial class MainWindow: Gtk.Window
 		childWindow = new SettingsWindow ();
 	}
 		
+	protected void OnDetailsToggle (object sender, EventArgs e)
+	{
+		EventHandler handler = DetailsToggled;
+		if (handler != null) {
+			handler (this, e);
+		}
+	}
 }
 

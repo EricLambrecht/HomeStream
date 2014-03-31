@@ -36,8 +36,16 @@ namespace HomeStream
 			Win.RefreshRequest += OnRefreshRequest;
 			Win.ReceiverAdded += OnReceiverAdded;
 			Win.StreamingAttempt += OnStreamingAttempt;
+			Win.DetailsToggled += OnDetailsToggled;
 			Win.Show ();
 			Application.Run ();
+		}
+			
+		protected void OnDetailsToggled (object sender, EventArgs e)
+		{
+			// implement CheckboxEventArgs
+			// check whether true or false
+			// link ffmpeg output to logline...
 		}
 
 		protected void OnRefreshRequest (object sender, EventArgs e) {
@@ -155,7 +163,7 @@ namespace HomeStream
 			{
 				Win.InvokeLogLine ("Streaming...");
 				Streaming = true;
-				await tortilla.StreamWindowsScreenToIp ("UScreenCapture", "Stereo Mix (ASUS Xonar D1 Audio Device)", "127.0.0.1:8080", StreamingMode.UDP);
+				await tortilla.StreamWindowsScreenToIpAsync ("UScreenCapture", "Stereo Mix (ASUS Xonar D1 Audio Device)", "127.0.0.1:8080", StreamingMode.UDP);
 				Streaming = false;
 				Win.InvokeLogLine ("Streaming stopped.");
 			} 
@@ -163,7 +171,6 @@ namespace HomeStream
 			{
 				Win.InvokeLogLine ("Trying to stop stream.");
 				tortilla.SendInputToFFmpegProcess ('q');
-				Streaming = false;
 			}
 		}
 
