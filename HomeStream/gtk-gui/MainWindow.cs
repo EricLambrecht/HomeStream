@@ -18,9 +18,11 @@ public partial class MainWindow
 	private global::Gtk.VBox vbox4;
 	private global::Gtk.Button buttonRefreshNetwork;
 	private global::Gtk.Button buttonConnect;
+	private global::Gtk.Button button1;
 	private global::Gtk.Button buttonBroadcast;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow;
 	private global::Gtk.TextView logview;
+	private global::Gtk.CheckButton showDetailsCheckBox;
 	private global::Gtk.Statusbar statusbar;
 	private global::Gtk.ProgressBar progressbar;
 
@@ -125,31 +127,42 @@ public partial class MainWindow
 		w7.Expand = false;
 		w7.Fill = false;
 		// Container child vbox4.Gtk.Box+BoxChild
+		this.button1 = new global::Gtk.Button ();
+		this.button1.CanFocus = true;
+		this.button1.Name = "button1";
+		this.button1.UseUnderline = true;
+		this.button1.Label = global::Mono.Unix.Catalog.GetString ("GtkButton");
+		this.vbox4.Add (this.button1);
+		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.button1]));
+		w8.Position = 2;
+		w8.Expand = false;
+		w8.Fill = false;
+		// Container child vbox4.Gtk.Box+BoxChild
 		this.buttonBroadcast = new global::Gtk.Button ();
 		this.buttonBroadcast.CanFocus = true;
 		this.buttonBroadcast.Name = "buttonBroadcast";
 		this.buttonBroadcast.UseUnderline = true;
 		this.buttonBroadcast.BorderWidth = ((uint)(6));
 		this.buttonBroadcast.Label = global::Mono.Unix.Catalog.GetString ("_Streamen");
-		global::Gtk.Image w8 = new global::Gtk.Image ();
-		w8.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-media-play", global::Gtk.IconSize.Button);
-		this.buttonBroadcast.Image = w8;
+		global::Gtk.Image w9 = new global::Gtk.Image ();
+		w9.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-media-play", global::Gtk.IconSize.Button);
+		this.buttonBroadcast.Image = w9;
 		this.vbox4.Add (this.buttonBroadcast);
-		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.buttonBroadcast]));
-		w9.PackType = ((global::Gtk.PackType)(1));
-		w9.Position = 2;
-		w9.Expand = false;
-		w9.Fill = false;
-		this.hbox1.Add (this.vbox4);
-		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.vbox4]));
-		w10.Position = 1;
+		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.buttonBroadcast]));
+		w10.PackType = ((global::Gtk.PackType)(1));
+		w10.Position = 3;
 		w10.Expand = false;
 		w10.Fill = false;
-		this.vbox3.Add (this.hbox1);
-		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hbox1]));
-		w11.Position = 0;
+		this.hbox1.Add (this.vbox4);
+		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.vbox4]));
+		w11.Position = 1;
 		w11.Expand = false;
 		w11.Fill = false;
+		this.vbox3.Add (this.hbox1);
+		global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hbox1]));
+		w12.Position = 0;
+		w12.Expand = false;
+		w12.Fill = false;
 		// Container child vbox3.Gtk.Box+BoxChild
 		this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
 		this.GtkScrolledWindow.Name = "GtkScrolledWindow";
@@ -162,11 +175,24 @@ public partial class MainWindow
 		this.logview.Name = "logview";
 		this.GtkScrolledWindow.Add (this.logview);
 		this.vbox3.Add (this.GtkScrolledWindow);
-		global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.GtkScrolledWindow]));
-		w13.Position = 1;
-		this.vbox1.Add (this.vbox3);
-		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.vbox3]));
+		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.GtkScrolledWindow]));
 		w14.Position = 1;
+		// Container child vbox3.Gtk.Box+BoxChild
+		this.showDetailsCheckBox = new global::Gtk.CheckButton ();
+		this.showDetailsCheckBox.CanFocus = true;
+		this.showDetailsCheckBox.Name = "showDetailsCheckBox";
+		this.showDetailsCheckBox.Label = global::Mono.Unix.Catalog.GetString ("Details anzeigen");
+		this.showDetailsCheckBox.DrawIndicator = true;
+		this.showDetailsCheckBox.UseUnderline = true;
+		this.showDetailsCheckBox.BorderWidth = ((uint)(6));
+		this.vbox3.Add (this.showDetailsCheckBox);
+		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.showDetailsCheckBox]));
+		w15.Position = 2;
+		w15.Expand = false;
+		w15.Fill = false;
+		this.vbox1.Add (this.vbox3);
+		global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.vbox3]));
+		w16.Position = 1;
 		// Container child vbox1.Gtk.Box+BoxChild
 		this.statusbar = new global::Gtk.Statusbar ();
 		this.statusbar.Name = "statusbar";
@@ -175,20 +201,20 @@ public partial class MainWindow
 		this.progressbar = new global::Gtk.ProgressBar ();
 		this.progressbar.Name = "progressbar";
 		this.statusbar.Add (this.progressbar);
-		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.statusbar [this.progressbar]));
-		w15.Position = 2;
-		w15.Expand = false;
-		w15.Fill = false;
+		global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.statusbar [this.progressbar]));
+		w17.Position = 2;
+		w17.Expand = false;
+		w17.Fill = false;
 		this.vbox1.Add (this.statusbar);
-		global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.statusbar]));
-		w16.Position = 2;
-		w16.Expand = false;
-		w16.Fill = false;
+		global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.statusbar]));
+		w18.Position = 2;
+		w18.Expand = false;
+		w18.Fill = false;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
-		this.DefaultWidth = 794;
+		this.DefaultWidth = 768;
 		this.DefaultHeight = 512;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
@@ -197,5 +223,6 @@ public partial class MainWindow
 		this.buttonRefreshNetwork.Clicked += new global::System.EventHandler (this.OnClickRefresh);
 		this.buttonConnect.Clicked += new global::System.EventHandler (this.OnClickConnect);
 		this.buttonBroadcast.Clicked += new global::System.EventHandler (this.OnClickStream);
+		this.showDetailsCheckBox.Toggled += new global::System.EventHandler (this.OnDetailsToggle);
 	}
 }

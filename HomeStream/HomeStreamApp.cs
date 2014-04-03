@@ -16,9 +16,10 @@ namespace HomeStream
 	class HomeStreamApp
 	{
 		MainWindow Win;
-		Tortilla tortilla;
+		protected Tortilla Tortilla;
 		public List<Receiver> Receivers;
 		public bool Streaming { get; private set;}
+		public bool ShowDetails { get; set; }
 		bool DebugMode = false;
 		const int statusBarID = 2;
 
@@ -29,8 +30,10 @@ namespace HomeStream
 
 		public HomeStreamApp() {
 			Application.Init ();
-			tortilla = new Tortilla ();
+			Tortilla = new Tortilla ();
+			Tortilla.OutputReceived += OnOutputReceived;
 			Streaming = false;
+			ShowDetails = false;
 			Win = new MainWindow ();
 			Win.ConnectionAttempt += OnConnectionAttempt;
 			Win.RefreshRequest += OnRefreshRequest;
@@ -41,11 +44,13 @@ namespace HomeStream
 			Application.Run ();
 		}
 			
-		protected void OnDetailsToggled (object sender, EventArgs e)
+		protected async void OnDetailsToggled (object sender, EventArgs e)
 		{
-			// implement CheckboxEventArgs
-			// check whether true or false
-			// link ffmpeg output to logline...
+			ShowDetails = !ShowDetails;
+			Win.InvokeLogLine ("Toggled Details");
+			if (ShowDetails) {
+				await Tortilla.LogFFmpegOutput ();
+			}
 		}
 
 		protected void OnRefreshRequest (object sender, EventArgs e) {
@@ -73,10 +78,10 @@ namespace HomeStream
 
 			// IP-Range
 			int start = 1;
-			int end = 168;
+			int end = 255;
 
 			// Build list containing all IPs in range.
-			List<string> ipList = new List<string>(168);
+			List<string> ipList = new List<string>(256);
 			for (int i = start; i <= end; i++) {
 				ipList.Add ("192.168.178." + i.ToString ());
 			}
@@ -139,44 +144,44 @@ namespace HomeStream
 		}
 
 		protected void OnConnectionAttempt (object sender, ConnectionEventArgs e) {
-			ConnectToIp ("Trying to connect with: " + e.IP);
+			ConnectToIp (e.IP);
 		}
 
-		public async virtual void ConnectToIp (string ip) { // use IPAddress or something
+		public virtual void ConnectToIp (string ip) { // use IPAddress or something
 			Win.InvokeLogLine ("Connecting to " + ip);
-			tortilla.OutputReceived += OnOutputReceived;
-			foreach (string videoDevice in tortilla.VideoDevices) { 
+			foreach (string videoDevice in Tortilla.VideoDevices) { 
 				Win.InvokeLogLine (videoDevice);
 			}
-			foreach (string audioDevice in tortilla.AudioDevices) { 
+			foreach (string audioDevice in Tortilla.AudioDevices) { 
 				Win.InvokeLogLine (audioDevice);
 			}
-			foreach (string line in tortilla.Output) { 
+			foreach (string line in Tortilla.Output) { 
 				Win.InvokeLogLine (line);
 			}
-			await tortilla.LogFFmpegOutput ();
 			//tortilla.KillProcess (tortilla.FFmpegProcess);
 		}
 
 		protected async void OnStreamingAttempt (object sender, EventArgs e) {
 			if (!Streaming) 
 			{
-				Win.InvokeLogLine ("Streaming...");
+				string ip = Win.SelectedDeviceTreeNode.IP;
+				Win.InvokeLogLine (string.Format("Streaming to IP {0}...", ip));
 				Streaming = true;
-				await tortilla.StreamWindowsScreenToIpAsync ("UScreenCapture", "Stereo Mix (ASUS Xonar D1 Audio Device)", "127.0.0.1:8080", StreamingMode.UDP);
+				await Tortilla.StreamWindowsScreenToIpAsync ("UScreenCapture", "Stereo Mix (ASUS Xonar D1 Audio Device)", ip +":8080", StreamingMode.UDP);
 				Streaming = false;
 				Win.InvokeLogLine ("Streaming stopped.");
 			} 
 			else 
 			{
 				Win.InvokeLogLine ("Trying to stop stream.");
-				tortilla.SendInputToFFmpegProcess ('q');
+				Tortilla.SendInputToFFmpegProcess ('q');
+				//Tortilla.Kill ();
 			}
 		}
 
-		void OnOutputReceived (object sender, DataReceivedEventArgs e)
+		void OnOutputReceived (object sender, OutputReceivedEventArgs e)
 		{
-			Win.InvokeLogLine (tortilla.Output.Last ());
+			Win.InvokeLogLine (Tortilla.Output.Last ());
 		}
 
 		protected void OnReceiverAdded (object sender, ConnectionEventArgs e) {

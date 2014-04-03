@@ -26,7 +26,7 @@ public partial class MainWindow: Gtk.Window
 		DeviceView.AppendColumn ("Name", new CellRendererText (), "text", 0);
 		DeviceView.AppendColumn ("IP", new CellRendererText (), "text", 1);
 		DeviceView.ShowAll ();
-		DeviceView.NodeSelection.Changed += OnDeviceSeletectionChanged;
+		DeviceView.NodeSelection.Changed += OnDeviceSelectionChanged;
 		SelectedDeviceTreeNode = new DeviceTreeNode ("", "");
 	}
 
@@ -34,6 +34,8 @@ public partial class MainWindow: Gtk.Window
 	public void LogLine(string line) 
 	{
 		logview.Buffer.Text += line + '\n';
+		logview.Buffer.PlaceCursor (logview.Buffer.EndIter);
+		logview.ScrollToIter (logview.Buffer.EndIter, 0, false, 0, 0);
 	}
 
 	public void AddDevice (string ip, string name = "Unbekanntes Gerät") 
@@ -113,7 +115,7 @@ public partial class MainWindow: Gtk.Window
 		});
 	}
 
-	protected void OnDeviceSeletectionChanged (object sender, EventArgs args) 
+	protected void OnDeviceSelectionChanged (object sender, EventArgs args) 
 	{
 		NodeSelection selection = (NodeSelection)sender;
 		SelectedDeviceTreeNode = (DeviceTreeNode)selection.SelectedNode;
