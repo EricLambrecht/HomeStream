@@ -54,8 +54,16 @@ namespace HomeStream
 			Application.Init ();
 			Tortilla = new Tortilla ();
 			Tortilla.OutputReceived += OnOutputReceived;
+			try {
+				Tortilla.UpdateDevices();
+			}
+			catch(System.IO.FileNotFoundException e) { 
+				Win.InvokeLogLine ("Fehler: " + e.Message);
+			}
+
 			Streaming = false;
 			ShowDetails = false;
+
 			Win = new MainWindow ();
 			Win.ConnectionAttempt += OnConnectionAttempt;
 			Win.RefreshRequest += OnRefreshRequest;
@@ -63,6 +71,7 @@ namespace HomeStream
 			Win.StreamingAttempt += OnStreamingAttempt;
 			Win.DetailsToggled += OnDetailsToggled;
 			Win.Show ();
+
 			Application.Run ();
 		}
 			
