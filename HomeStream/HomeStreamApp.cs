@@ -81,10 +81,7 @@ namespace HomeStream
 			byte[] buffer = Encoding.ASCII.GetBytes (data);
 			return buffer;
 		}
-
-		/// <summary>
-		/// Searches for network devices in a specific IP-range by pinging them.
-		/// </summary>
+			
 		public async void SearchForNetworkDevices () {
 
 			// UI Stuff: Clear device list, set status, write additional log line, clear progress bar.
@@ -135,7 +132,7 @@ namespace HomeStream
 			// Send a asynchronous ping.
 			using (Ping pingSender = new Ping ()) {
 				byte[] buffer = GetPingBuffer ();
-				int timeout = 200;
+				int timeout = 300;
 				var options = new PingOptions (128, true);
 				reply = await pingSender.SendPingAsync(ipOrHost, timeout, buffer, options);
 			}
@@ -197,16 +194,18 @@ namespace HomeStream
 			{
 				// Streaming target is the selected ip in our MainWindow.
 				string ip = Win.SelectedDeviceTreeNode.IP;
+				Win.InvokeChangeStatus (statusBarID, "Streaming...");
 				Win.InvokeLogLine (string.Format("Streaming to IP {0}...", ip));
 				Streaming = true;
 
 				// We create two tasks, one that streams the data and one that logs the corresponding output.
-				Task streaming = Tortilla.StreamWindowsScreenToIpAsync ("UScreenCapture", "Stereo Mix (ASUS Xonar D1 Audio Device)", ip +":8080", StreamingMode.UDP);
+				Task streaming = Tortilla.StreamWindowsScreenToIpAsync ("UScreenCapture", "Stereo Mix (ASUS Xonar D1 Audio Device)", ip +":8090", StreamingMode.UDP);
 				Task logging = Tortilla.LogFFmpegOutput ();
 				await Task.WhenAll (streaming, logging);
 
 				Streaming = false;
 				Win.InvokeLogLine ("Streaming stopped.");
+				Win.InvokeChangeStatus (statusBarID, ""); // Clear statusbar
 			} 
 			else 
 			{

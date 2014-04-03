@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeStream", "HomeStream\HomeStream.csproj", "{B8B548B8-2577-438B-A01E-9EF020A34EAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tortilla", "..\Tortilla\Tortilla\Tortilla.csproj", "{012D5570-61D3-4E5B-BFA9-40C719C432DC}"
@@ -11,10 +11,17 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8B548B8-2577-438B-A01E-9EF020A34EAE}.Debug|x86.ActiveCfg = Debug|x86
+		{B8B548B8-2577-438B-A01E-9EF020A34EAE}.Debug|x86.Build.0 = Debug|x86
+		{B8B548B8-2577-438B-A01E-9EF020A34EAE}.Release|x86.ActiveCfg = Release|x86
+		{B8B548B8-2577-438B-A01E-9EF020A34EAE}.Release|x86.Build.0 = Release|x86
 		{012D5570-61D3-4E5B-BFA9-40C719C432DC}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{012D5570-61D3-4E5B-BFA9-40C719C432DC}.Debug|x86.Build.0 = Debug|Any CPU
 		{012D5570-61D3-4E5B-BFA9-40C719C432DC}.Release|x86.ActiveCfg = Release|Any CPU
 		{012D5570-61D3-4E5B-BFA9-40C719C432DC}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = HomeStream\HomeStream.csproj

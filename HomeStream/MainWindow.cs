@@ -79,7 +79,6 @@ public partial class MainWindow: Gtk.Window
 	/*
 	 * The following methods should be thread safe.
 	 */
-
 	public void InvokeLogLine(string line) 
 	{
 		Gtk.Application.Invoke (delegate {

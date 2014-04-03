@@ -39,12 +39,10 @@ namespace HomeStream
 			// Container child hbox1.Gtk.Box+BoxChild
 			this.audioDevicesComboBox = global::Gtk.ComboBox.NewText ();
 			this.audioDevicesComboBox.WidthRequest = 200;
-			this.audioDevicesComboBox.Name = "combobox1";
+			this.audioDevicesComboBox.Name = "audioDevicesComboBox";
 			this.hbox1.Add (this.audioDevicesComboBox);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.audioDevicesComboBox]));
 			w2.Position = 1;
-			w2.Expand = false;
-			w2.Fill = false;
 			this.vbox1.Add (this.hbox1);
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox1]));
 			w3.Position = 0;
