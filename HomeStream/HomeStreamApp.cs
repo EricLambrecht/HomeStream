@@ -15,12 +15,31 @@ namespace HomeStream
 {
 	class HomeStreamApp
 	{
+		/// <summary>
+		/// The app's main window.
+		/// </summary>
 		MainWindow Win;
+		/// <summary>
+		/// A nice and tasty tortilla.
+		/// </summary>
 		protected Tortilla Tortilla;
+		/// <summary>
+		/// A list of all receivers, i.e. all IPs that receive a stream from this app.
+		/// </summary>
 		public List<Receiver> Receivers;
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="HomeStream.HomeStreamApp"/> is streaming.
+		/// </summary>
+		/// <value><c>true</c> if streaming; otherwise, <c>false</c>.</value>
 		public bool Streaming { get; private set;}
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="HomeStream.HomeStreamApp"/> is supposed to show details.
+		/// </summary>
+		/// <value><c>true</c> if show details; otherwise, <c>false</c>.</value>
 		public bool ShowDetails { get; set; }
-		bool DebugMode = false;
+		/// <summary>
+		/// The status bar ID for writing into the main window.
+		/// </summary>
 		const int statusBarID = 2;
 
 		public static void Main (string[] args)
@@ -28,6 +47,9 @@ namespace HomeStream
 			new HomeStreamApp ();
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="HomeStream.HomeStreamApp"/> class.
+		/// </summary>
 		public HomeStreamApp() {
 			Application.Init ();
 			Tortilla = new Tortilla ();
@@ -44,10 +66,9 @@ namespace HomeStream
 			Application.Run ();
 		}
 			
-		protected async void OnDetailsToggled (object sender, EventArgs e)
+		protected void OnDetailsToggled (object sender, EventArgs e)
 		{
 			ShowDetails = !ShowDetails;
-			Win.InvokeLogLine ("Toggled Details");
 		}
 
 		protected void OnRefreshRequest (object sender, EventArgs e) {
@@ -61,6 +82,9 @@ namespace HomeStream
 			return buffer;
 		}
 
+		/// <summary>
+		/// Searches for network devices in a specific IP-range by pinging them.
+		/// </summary>
 		public async void SearchForNetworkDevices () {
 
 			// UI Stuff: Clear device list, set status, write additional log line, clear progress bar.
@@ -97,6 +121,13 @@ namespace HomeStream
 			Win.ResetProgress ();
 		}
 
+		/// <summary>
+		/// Sends pings to a specified LAN-Address and checks whether it's responding or not. 
+		/// If so, the IP will be added to the main window.
+		/// </summary>
+		/// <returns>A boolean indicating that the task has finished.</returns>
+		/// <param name="ipOrHost">IP-address or hostname.</param>
+		/// <param name="totalAmountOfPings">Total amount of pings to calculate progress in main window.</param>
 		public async Task<bool> PingAndProcessAsync(string ipOrHost, int totalAmountOfPings) {
 
 			PingReply reply;
@@ -110,7 +141,7 @@ namespace HomeStream
 			}
 
 			// Write ping reply (when ping completed).
-			if (DebugMode) {
+			if (ShowDetails) {
 				Win.InvokeLogLine (string.Format (
 					"{0}: {1} ({2})", 
 					ipOrHost, 
@@ -146,45 +177,57 @@ namespace HomeStream
 
 		public virtual void ConnectToIp (string ip) { // use IPAddress or something
 			Win.InvokeLogLine ("Connecting to " + ip);
+
+			// TODO: Move this to a appropriate spot, e.g settings window.
 			foreach (string videoDevice in Tortilla.VideoDevices) { 
 				Win.InvokeLogLine (videoDevice);
 			}
 			foreach (string audioDevice in Tortilla.AudioDevices) { 
 				Win.InvokeLogLine (audioDevice);
 			}
-			foreach (string line in Tortilla.Output) { 
-				Win.InvokeLogLine (line);
-			}
-			//tortilla.KillProcess (tortilla.FFmpegProcess);
 		}
 
+		/// <summary>
+		/// Starts a stream to the current selected IP in the main window.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		/// <param name="e">Event Args.</param>
 		protected async void OnStreamingAttempt (object sender, EventArgs e) {
 			if (!Streaming) 
 			{
+				// Streaming target is the selected ip in our MainWindow.
 				string ip = Win.SelectedDeviceTreeNode.IP;
 				Win.InvokeLogLine (string.Format("Streaming to IP {0}...", ip));
 				Streaming = true;
+
+				// We create two tasks, one that streams the data and one that logs the corresponding output.
 				Task streaming = Tortilla.StreamWindowsScreenToIpAsync ("UScreenCapture", "Stereo Mix (ASUS Xonar D1 Audio Device)", ip +":8080", StreamingMode.UDP);
 				Task logging = Tortilla.LogFFmpegOutput ();
 				await Task.WhenAll (streaming, logging);
+
 				Streaming = false;
 				Win.InvokeLogLine ("Streaming stopped.");
 			} 
 			else 
 			{
-				Win.InvokeLogLine ("Trying to stop stream.");
+				Win.InvokeLogLine ("Trying to stop stream...");
+				// 'q' quits a running ffmpeg process.
 				Tortilla.SendInputToFFmpegProcess ('q');
-				//Tortilla.Kill ();
 			}
 		}
 
-		void OnOutputReceived (object sender, OutputReceivedEventArgs e)
+		/// <summary>
+		/// If <see cref="HomeStream.HomeStreamApp.ShowDetails"/> is set to true, this function will output all incoming output from Tortilla.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		/// <param name="e">E.</param>
+		protected virtual void OnOutputReceived (object sender, OutputReceivedEventArgs e)
 		{
 			if (ShowDetails)
 				Win.InvokeLogLine (Tortilla.Output.Last ());
 		}
 
-		protected void OnReceiverAdded (object sender, ConnectionEventArgs e) {
+		protected virtual void OnReceiverAdded (object sender, ConnectionEventArgs e) {
 			Receivers.Add (new Receiver (e.IP, e.Name));
 			ConnectToIp ("Added: " + e.IP + "to receiver list");
 		}
