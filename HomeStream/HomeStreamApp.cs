@@ -48,9 +48,6 @@ namespace HomeStream
 		{
 			ShowDetails = !ShowDetails;
 			Win.InvokeLogLine ("Toggled Details");
-			if (ShowDetails) {
-				await Tortilla.LogFFmpegOutput ();
-			}
 		}
 
 		protected void OnRefreshRequest (object sender, EventArgs e) {
@@ -167,7 +164,9 @@ namespace HomeStream
 				string ip = Win.SelectedDeviceTreeNode.IP;
 				Win.InvokeLogLine (string.Format("Streaming to IP {0}...", ip));
 				Streaming = true;
-				await Tortilla.StreamWindowsScreenToIpAsync ("UScreenCapture", "Stereo Mix (ASUS Xonar D1 Audio Device)", ip +":8080", StreamingMode.UDP);
+				Task streaming = Tortilla.StreamWindowsScreenToIpAsync ("UScreenCapture", "Stereo Mix (ASUS Xonar D1 Audio Device)", ip +":8080", StreamingMode.UDP);
+				Task logging = Tortilla.LogFFmpegOutput ();
+				await Task.WhenAll (streaming, logging);
 				Streaming = false;
 				Win.InvokeLogLine ("Streaming stopped.");
 			} 
@@ -181,7 +180,8 @@ namespace HomeStream
 
 		void OnOutputReceived (object sender, OutputReceivedEventArgs e)
 		{
-			Win.InvokeLogLine (Tortilla.Output.Last ());
+			if (ShowDetails)
+				Win.InvokeLogLine (Tortilla.Output.Last ());
 		}
 
 		protected void OnReceiverAdded (object sender, ConnectionEventArgs e) {
